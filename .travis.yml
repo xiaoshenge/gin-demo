@@ -8,4 +8,4 @@ script:
   - echo "test done"
 after_success:
   - docker build -t xiaoshenge/gin-demo .
-  - docker push xiaoshenge/gen-demo
+  - docker push xiaoshenge/gin-demo
