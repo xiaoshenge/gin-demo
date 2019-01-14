@@ -2,4 +2,3 @@
 .idea
 gin-demo
 logs/*
-!logs/.gitkeep
