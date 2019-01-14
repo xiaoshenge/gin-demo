@@ -7,7 +7,7 @@ COPY go.sum .
 ENV GO111MODULE=on 
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build  -o /go/bin/gin-demo
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o /go/bin/gin-demo
 FROM scratch
 COPY --from=build /go/bin/gin-demo /go/bin/gin-demo
 EXPOSE 9090
