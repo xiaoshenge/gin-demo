@@ -59,6 +59,10 @@ func main() {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
+	go func() {
+		log.Println(http.ListenAndServe("localhost:6060", nil))
+	}()
+	
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, syscall.SIGKILL)
