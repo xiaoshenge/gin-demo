@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net"
 	"net/http"
@@ -12,6 +11,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -62,7 +63,6 @@ func main() {
 	go func() {
 		log.Println(http.ListenAndServe(":6060", nil))
 	}()
-
 
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, syscall.SIGKILL)
