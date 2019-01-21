@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
@@ -49,6 +50,8 @@ func main() {
 			"srvIp": localIP,
 		})
 	})
+
+	r.GET("/metrics", gin.WrapF(promhttp.Handler().ServeHTTP))
 
 	server := &http.Server{
 		Addr:    ":9090",
