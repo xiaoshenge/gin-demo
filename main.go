@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/handlers"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -46,8 +47,9 @@ func main() {
 	r.GET("/metrics", gin.WrapF(promhttp.Handler().ServeHTTP))
 
 	server := &http.Server{
-		Addr:    ":9090",
-		Handler: r,
+		Addr: ":9090",
+		// warp server with gzip handler to gzip compress all response
+		Handler: handlers.CompressHandler(r),
 	}
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
