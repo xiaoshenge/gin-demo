@@ -18,14 +18,6 @@ import (
 
 func main() {
 
-	// logFile := fmt.Sprintf("logs/%s", time.Now().Format("2006-01-02"))
-	// f, err := os.OpenFile(logFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer f.Close()
-	// log.SetOutput(f)
-
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
@@ -50,23 +42,25 @@ func main() {
 			"srvIp": localIP,
 		})
 	})
-
+	// prometheus
 	r.GET("/metrics", gin.WrapF(promhttp.Handler().ServeHTTP))
 
 	server := &http.Server{
 		Addr:    ":9090",
 		Handler: r,
 	}
-
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
+
+	// pprof
 	go func() {
 		log.Println(http.ListenAndServe(":6060", nil))
 	}()
 
+	// signal handler
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM, syscall.SIGUSR2, syscall.SIGKILL)
 
