@@ -17,10 +17,9 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-func main() {
-
+func setRouter() *gin.Engine {
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
+	r.GET("/ping",func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
 		})
@@ -45,7 +44,11 @@ func main() {
 	})
 	// prometheus
 	r.GET("/metrics", gin.WrapF(promhttp.Handler().ServeHTTP))
+	return r
+}
 
+func main() {
+	r := setRouter()
 	server := &http.Server{
 		Addr: ":9090",
 		// warp server with gzip handler to gzip compress all response
