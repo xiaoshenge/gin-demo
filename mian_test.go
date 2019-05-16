@@ -1,17 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"testing"
 )
 
-func TestPing(t *testing.T) {
+func ExamplePing() {
 	r := setRouter()
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/ping", nil)
 	r.ServeHTTP(w, req)
-	if w.Body.String() != `{"message":"pong"}` {
-		t.Error("err")
-	}
+	fmt.Println(w.Body.String())
+	// Output: {"message":"pong"}
 }
